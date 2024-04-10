@@ -1,13 +1,6 @@
 from django.db import models
-
-
-class Client(models.Model):
-    email = models.EmailField(null=True)
-    name = models.CharField(max_length=200, null=True)
-    comment = models.TextField(null=True)
-
-    def __str__(self):
-        return self.name
+# from django.conf import settings
+# from django.core.mail import send_mail
 
 
 class Message(models.Model):
@@ -26,14 +19,15 @@ class Newsletter(models.Model):
     )
 
     STATUS_CHOICES = (
-        (1, 'COMPLETED'),
-        (2, 'CREATED'),
+        (1, 'CREATED'),
+        (2, 'COMPLETED'),
         (3, 'LAUNCHED')
     )
 
     start_date = models.DateTimeField(null=True)
     interval = models.PositiveSmallIntegerField(choices=INTERVALS_CHOICES, null=True)
     mailing_status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, null=True)
+    message = models.OneToOneField(Message, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.start_date} - {self.mailing_status}'
@@ -46,3 +40,37 @@ class MailingAttempt(models.Model):
 
     def __str__(self):
         return f'{self.date_of_last_attempt} - {self.status_of_last_attempt}'
+
+
+class Client(models.Model):
+    email = models.EmailField(null=True)
+    name = models.CharField(max_length=200, null=True)
+    comment = models.TextField(null=True)
+    newsletter = models.ForeignKey(Newsletter, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.name
+
+#
+# def send_message():
+#     clients = Client.objects.all()
+#
+#     try:
+#         Newsletter.mailing_status = '3'
+#         result = send_mail(
+#             subject=Message.title,
+#             message=Message.text,
+#             from_email=settings.EMAIL_HOST_USER,
+#             clients_list=[client.email for client in clients],
+#         )
+#
+#         MailingAttempt.objects.create(
+#             status_of_last_attempt=True,
+#             server_response="Сообщение отправлено",
+#         )
+#     except Exception as e:
+#         MailingAttempt.objects.create(
+#             status_of_last_attempt=False,
+#             server_response=f"Ошибка при отправке сообщения: {e}"
+#         )
+#         print('Schedule failed, check logs')
