@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Message(models.Model):
-    title = models.CharField(null=True)
+    title = models.CharField(max_length=200, null=True)
     text = models.TextField(null=True)
 
     def __str__(self):
@@ -43,7 +43,7 @@ class MailingAttempt(models.Model):
 
 
 class Client(models.Model):
-    email = models.EmailField(null=True)
+    email = models.EmailField(max_length=200,null=True)
     name = models.CharField(max_length=200, null=True)
     comment = models.TextField(null=True)
     newsletter = models.ForeignKey(Newsletter, on_delete=models.PROTECT, null=True)
