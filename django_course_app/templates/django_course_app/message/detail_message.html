@@ -1,0 +1,33 @@
+{% extends 'django_course_app/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="card">
+        <div class="row g-0">
+            <div class="card-header">
+                <p><h4 class="card-title"><strong>{{ object.title }}</strong></h4></p>
+            </div>
+            <div class="col">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <dl class="row">
+                            <dt class="col-sm-2">Тема сообщения</dt>
+                            <dd class="col-sm-10">{{ object.subject }}</dd>
+                        </dl>
+                        <dl class="row">
+                            <dt class="col-sm-2">Текст сообщения</dt>
+                            <dd class="col-sm-10">{{ object.text|linebreaksbr }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .raz {
+                    text-align: right;
+                }
+            </style>
+        </div>
+    </div>
+
+{% endblock %}

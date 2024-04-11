@@ -1,0 +1,25 @@
+{% extends 'django_course_app/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title"><strong><h4>Newsletter</h4></strong></div>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Статус</dt>
+                <dd class="col-sm-9">{{ object.get_status_display }}</dd>
+
+                <dt class="col-sm-3">Начало - окончание</dt>
+                <dd class="col-sm-9">{{ object.start_date }} - {{ object.end_date }}</dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <br>
+
+
+{% endblock %}
