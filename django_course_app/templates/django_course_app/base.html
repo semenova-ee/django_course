@@ -11,21 +11,37 @@
 <div class="container">
     {% include 'django_course_app/includes/inc_title.html'%}
 
-    {% block content %}
-    {% endblock %}
-</div>
+{% block content %}
+{% endblock %}
 <footer class="pt-4 my-md-5 pt-md-5 border-top">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md">
-                Mailing Service
-                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+            <div class="col-3 col-md">
+                <small class="d-block mb-3 text-muted">{{ user.email|default:"Вы не авторизованны" }}</small>
+            </div>
+            <div class="col-3 col-md">
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="{% url 'django_course_app:index' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="text-muted" href="{% url 'django_course_app:messages' %}">Рассылки</a></li>
+                    {% endif %}
+                    {% if not user.is_staff and user.is_authenticated or user.is_superuser %}
+                    <li><a class="text-muted" href="{% url 'django_course_app:clients' %}">Клиенты</a></li>
+                    <li><a class="text-muted" href="{% url 'django_course_app:mailing_attempts' %}">Отчеты</a></li>
+                    <li><a class="text-muted" href="{% url 'users:users_list' %}">Пользователи</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-3 col-md">
+                <h5>Дополнительно</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="{% url 'blog:list' %}">Наш блог</a></li>
+                </ul>
             </div>
         </div>
     </div>
 </footer>
 
-
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
